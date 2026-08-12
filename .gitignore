@@ -4,3 +4,4 @@ venv/
 __pycache__/
 *.pyc
 build_cpp_bank.py
+.DS_Store

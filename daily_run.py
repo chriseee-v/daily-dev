@@ -292,16 +292,18 @@ def daily_discussion(token, owner, repo, second_token):
 
 def main():
     token1  = os.environ.get("GITHUB_TOKEN_1")
-    token2  = os.environ.get("GITHUB_TOKEN_2")
-    repo    = os.environ.get("GITHUB_REPO", "prev")
+    # token2  = os.environ.get("GITHUB_TOKEN_2")
+    token2  = token1
+    repo    = os.environ.get("GITHUB_REPO", "daily-dev")
 
     if not token1:
         raise SystemExit("❌ GITHUB_TOKEN_1 env var not set")
-    if not token2:
-        raise SystemExit("❌ GITHUB_TOKEN_2 env var not set")
+    # if not token2:
+    #     raise SystemExit("❌ GITHUB_TOKEN_2 env var not set")
 
     user1 = get_authenticated_user(token1)
-    user2 = get_authenticated_user(token2)
+    # user2 = get_authenticated_user(token2)
+    user2 = user1
     owner = user1["login"]
     second_username = user2["login"]
 
