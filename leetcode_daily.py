@@ -113,7 +113,13 @@ def submit_solution(session, title_slug, question_id, code, lang="python3"):
         "question_id": str(question_id),
         "typed_code": code,
     }
-    r = session.post(url, json=payload)
+    # LeetCode's submit endpoint rejects requests whose Referer isn't the
+    # specific problem page (returns 403), so override it per-request.
+    headers = {
+        "Referer": f"{LEETCODE_BASE}/problems/{title_slug}/",
+        "Origin": LEETCODE_BASE,
+    }
+    r = session.post(url, json=payload, headers=headers)
     r.raise_for_status()
     return r.json().get("submission_id")
 
