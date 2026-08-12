@@ -120,6 +120,14 @@ def submit_solution(session, title_slug, question_id, code, lang="python3"):
         "Origin": LEETCODE_BASE,
     }
     r = session.post(url, json=payload, headers=headers)
+    if r.status_code == 403:
+        # One-shot diagnostic: is this Cloudflare (datacenter-IP block) or
+        # a LeetCode-level rejection? Surface the signal, then raise as before.
+        print(f"    [diag] 403 Server={r.headers.get('Server')} "
+              f"cf-ray={r.headers.get('cf-ray')} "
+              f"cf-mitigated={r.headers.get('cf-mitigated')} "
+              f"content-type={r.headers.get('Content-Type')}")
+        print(f"    [diag] body[:200]={r.text[:200]!r}")
     r.raise_for_status()
     return r.json().get("submission_id")
 
